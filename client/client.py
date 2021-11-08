@@ -3,6 +3,8 @@ from __future__ import print_function
 import logging
 
 import grpc
+import sys
+sys.path.append('..')
 import bee_pb2
 import bee_pb2_grpc
 

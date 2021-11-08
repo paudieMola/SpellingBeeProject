@@ -1,5 +1,8 @@
 from concurrent import futures
 import logging
+import sys
+sys.path.append('..')
+
 
 import grpc
 
