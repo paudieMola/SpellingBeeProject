@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+service BeeServer {
+  rpc StartBee (StartRequest) returns (StartReply) {}
+  rpc SubmitWord (SubmitWordRequest) returns(SubmitWordReply) {}
+}
+
+message StartRequest{
+}
+
+message StartReply{
+  string message = 1;
+}
+
+message SubmitWordRequest{
+  string wordIn = 1;
+}
+
+message SubmitWordReply{
+  int32 result = 1;
+}
