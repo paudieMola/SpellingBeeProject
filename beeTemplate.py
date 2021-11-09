@@ -4,7 +4,7 @@ class spellingBee(ABC):
     def __init__(self):
         self.target_word = ''
         self.rankings = {}
-        self.list_of_submits = []
+        self.list_of_submitted_words = []
         self.words = {}
 
     def choose_word(self):

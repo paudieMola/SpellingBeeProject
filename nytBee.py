@@ -79,15 +79,16 @@ class nytBee(spellingBee):
 
     def getRankings(self, totalscore):
         if totalscore < 15:
-            self.Rankings = 1
+            rank = 1
         elif totalscore < 20:
-            self.Rankings = 2
+            rank = 2
         elif totalscore < 30:
-            self.Rankings = 3
+            rank = 3
         elif totalscore < 40:
-            self.Rankings = 4
+            rank = 4
         else:
-            self.Rankings = 5
+            rank = 5
+        return rank
 
 
 class nytBeeBuilder:
