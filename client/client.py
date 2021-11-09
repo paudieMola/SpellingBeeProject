@@ -13,8 +13,8 @@ def run():
     stub = bee_pb2_grpc.BeeServerStub(channel)
     response = stub.StartBee(bee_pb2.StartRequest())
     print("Word: " + response.message)
-    response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn='HUURNTH'))
-    print("Result: " + str(response.result))
+    #response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn='HUURNTH'))
+    #print("Result: " + str(response.result))
 
 if __name__ == '__main__':
     logging.basicConfig()
