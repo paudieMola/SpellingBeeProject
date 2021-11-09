@@ -9,6 +9,7 @@ import pangrams
 class nytBee(spellingBee):
     __instance = None
 
+    #singleton pattern to ensure only one instance of the game is in play
     @staticmethod
     def get_instance():
         if nytBee.__instance is None:
@@ -32,11 +33,13 @@ class nytBee(spellingBee):
             pangram_dict = json.load(pangram_file)
             rand_num = random.randint(0, len(pangram_dict))
             chosen_word = list(pangram_dict.keys())[rand_num]
+        #should have used set here to return just 7 letters, will rewrite
         chosen_list = []
         chosen_list[:0] = chosen_word
         print(chosen_list)
         middle_spot = int(round(len(chosen_list)/2))
         random.shuffle(chosen_list)
+        #have to have a middle letter to validate
         self.middle_letter = chosen_list[middle_spot]
         middle_letter = '[' + self.middle_letter + ']'
         chosen_list[middle_spot] = middle_letter
@@ -44,12 +47,12 @@ class nytBee(spellingBee):
         return mixedup_word
 
     def process_word(self, word_in):
+        #will add comment to response to client
         self.comment = ''
         if (len(word_in)) > 3:
             if self.middle_letter in word_in:
                 if self.validate_word(word_in):
                     result = self.scoreWord(word_in)
-                    #print("Score: ", result)
                     self.totalscore += result
                     self.comment = self.Rankings[self.getRankings(self.totalscore)]
             else:
@@ -64,12 +67,12 @@ class nytBee(spellingBee):
             if word_in in word_dict:
                 return True
             else:
-                print("Word invalid in dict")
                 return False
 
     def scoreWord(self, word_in):
         word_score = len(word_in)
         if pangrams.is_pangram(word_in):
+            # I'll return this as a comment instead
             print("That is a pangram")
             word_score += 7
         return word_score
@@ -90,7 +93,7 @@ class nytBee(spellingBee):
             rank = 5
         return rank
 
-
+# used to build object
 class nytBeeBuilder:
 
     def __init__(self):
