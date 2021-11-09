@@ -1,8 +1,12 @@
 import json
+import random
 import threading
 
+from beeTemplate import spellingBee
+import pangrams
 
-class nytBee:
+
+class nytBee(spellingBee):
     __instance = None
 
     @staticmethod
@@ -19,10 +23,25 @@ class nytBee:
             raise Exception("This is a singleton")
         else:
             nytBee.__instance = self
-        self.mid_letter = None
+        self.middle_letter = None
         self.totalscore = 0
         self.Rankings = {1: "Meh!", 2: "Alright like!", 3: "Savage!", 4: "Massive!", 5: "Medazza!"}
 
+    def choose_word(self):
+        with open("pangrams.json", "r") as pangram_file:
+            pangram_dict = json.load(pangram_file)
+            rand_num = random.randint(0, len(pangram_dict))
+            chosen_word = list(pangram_dict.keys())[rand_num]
+        chosen_list = []
+        chosen_list[:0] = chosen_word
+        print(chosen_list)
+        middle_spot = int(round(len(chosen_list)/2))
+        random.shuffle(chosen_list)
+        self.middle_letter = chosen_list[middle_spot]
+        middle_letter = '[' + self.middle_letter + ']'
+        chosen_list[middle_spot] = middle_letter
+        mixedup_word = str(chosen_list)
+        return mixedup_word
 
     def process_word(self, chosen_word):
         word_in = ''
@@ -45,12 +64,12 @@ class nytBee:
             if word_in in word_dict:
                 return True
             else:
-                print("Word does not exist")
+                print("Word invalid in dict")
                 return False
 
     def scoreWord(self, word_in):
         word_score = len(word_in)
-        if server.pangrams.is_pangram(word_in):
+        if pangrams.is_pangram(word_in):
             print("That is a pangram")
             word_score += 7
         return word_score
@@ -60,12 +79,20 @@ class nytBee:
 
     def getRankings(self, totalscore):
         if totalscore < 15:
-            print(self.Rankings['1'])
+            print(self.Rankings[1])
         elif totalscore < 20:
-            print(self.Rankings['2'])
+            print(self.Rankings[2])
         elif totalscore < 20:
-            print(self.Rankings['3'])
+            print(self.Rankings[3])
         elif totalscore < 20:
-            print(self.Rankings['4'])
+            print(self.Rankings[4])
         else:
-            print(self.Rankings['5'])
+            print(self.Rankings[5])
+
+class nytBeeBuilder:
+
+    def __init__(self):
+        pass
+
+    def __call__(self, *args, **kwargs):
+        return nytBee()

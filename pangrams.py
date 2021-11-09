@@ -12,18 +12,18 @@ def is_pangram(word_in):
         return False
 
 def createPangramFile():
-    with open("../wordStore/words_dictionary.json") as json_file:
+    with open("wordStore/words_dictionary.json") as json_file:
         words = json.load(json_file)
 
         for word in words:
             if is_pangram(word):
                 pangrams[word] = ""
 
-    with open("../wordStore/pangrams.json", "w") as pangram_file:
+    with open("wordStore/pangrams.json", "w") as pangram_file:
         json.dump(pangrams, pangram_file)
 
 def getChosenWord():
-    with open("../wordStore/pangrams.json", "r") as pangram_file:
+    with open("wordStore/pangrams.json", "r") as pangram_file:
         pangram_dict = json.load(pangram_file)
         rand_num = randint(0, len(pangram_dict))
         random_pangram = list(pangram_dict.keys())[rand_num]
