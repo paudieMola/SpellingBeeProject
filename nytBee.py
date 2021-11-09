@@ -18,7 +18,7 @@ class nytBee(spellingBee):
         return nytBee.__instance
 
     def __init__(self):
-        #super().__init__()
+        super().__init__()
         if nytBee.__instance is not None:
             raise Exception("This is a singleton")
         else:
@@ -43,23 +43,23 @@ class nytBee(spellingBee):
         mixedup_word = str(chosen_list)
         return mixedup_word
 
-    def process_word(self, chosen_word):
-        word_in = ''
-        while word_in != "exitgame":
-            if (len(word_in)) > 3:
-                if self.mid_letter in word_in:
-                    if self.validate_word(word_in):
-                        result = self.scoreWord()
-                        print("Score: ", result)
-                        self.totalscore += result
-                        self.getRankings(self.totalscore)
-                else:
-                    print("Word must contain the letter: ", self.mid_letter)
+    def process_word(self, word_in):
+        self.comment = ''
+        if (len(word_in)) > 3:
+            if self.middle_letter in word_in:
+                if self.validate_word(word_in):
+                    result = self.scoreWord(word_in)
+                    #print("Score: ", result)
+                    self.totalscore += result
+                    self.comment = self.Rankings[self.getRankings(self.totalscore)]
             else:
-                print("Words must contain 4 letters")
+                self.comment = ("Word must contain the letter: ", self.middle_letter)
+        else:
+                self.comment = ("Words must contain 4 letters")
+        return self.totalscore
 
     def validate_word(self, word_in):
-        with open("wordStore/words_dictionary.json", "r") as words_file:
+        with open("words_dictionary.json", "r") as words_file:
             word_dict = json.load(words_file)
             if word_in in word_dict:
                 return True
@@ -79,15 +79,16 @@ class nytBee(spellingBee):
 
     def getRankings(self, totalscore):
         if totalscore < 15:
-            print(self.Rankings[1])
+            self.Rankings = 1
         elif totalscore < 20:
-            print(self.Rankings[2])
-        elif totalscore < 20:
-            print(self.Rankings[3])
-        elif totalscore < 20:
-            print(self.Rankings[4])
+            self.Rankings = 2
+        elif totalscore < 30:
+            self.Rankings = 3
+        elif totalscore < 40:
+            self.Rankings = 4
         else:
-            print(self.Rankings[5])
+            self.Rankings = 5
+
 
 class nytBeeBuilder:
 

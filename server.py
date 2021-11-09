@@ -22,6 +22,8 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         self.bee_type = "nytBee"
         self.factory = object_factory.ObjectFactory()
         self.factory.register_builder('nytBee', nytBee.nytBeeBuilder())
+        #self.bee = self.factory.create('nytBee')
+        #self.bee = self.bee.get_instance()
 
     def StartBee(self, request, context):
         #first I was going to choose the word in here
@@ -47,13 +49,16 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
             #mixedup_word.join(letter + '')
         #print(mixedup_word)
         print("in start Bee")
-        newBee = self.factory.create('nytBee')
-        mixedup_word = nytBee.nytBee.choose_word(newBee)
+        self.bee = self.factory.create('nytBee')
+        self.bee = self.bee.get_instance()
+        mixedup_word = nytBee.nytBee.choose_word(self.bee)
         return bee_pb2.StartReply(message=mixedup_word)
 
     def SubmitWord(self, request, context):
-        #print("in submit word")
-        result = 4
+        print("in submit word")
+        #result = self.bee.process_word(request.wordIn)
+        result = self.bee.process_word(request.wordIn)
+        print('submit word ', result)
         return bee_pb2.SubmitWordReply(result=result)
 
 def serve():
