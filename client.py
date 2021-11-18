@@ -14,8 +14,8 @@ def run():
 
     # start the game and
     response = stub.StartBee(bee_pb2.StartRequest())
-    print("Enter exitgame to exit. Letters: " + response.message)
-
+    print('Enter exitgame to exit. You must use the bracketed letter')
+    print('Letters: ' + response.message)
     # loop while game is running
     wordIn = ''
     while wordIn != 'exitgame':
@@ -26,4 +26,9 @@ def run():
 
 if __name__ == '__main__':
     logging.basicConfig()
+    gameChoice = -1
+    while gameChoice != 1:
+        print('Choose game: ')
+        print('1 : New York Times Spelling Bee')
+        gameChoice = int(input(''))
     run()
