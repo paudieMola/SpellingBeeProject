@@ -25,8 +25,6 @@ class nytBee(spellingBee):
         else:
             nytBee.__instance = self
         self.complett = None
-        #this is going to be an attribute of the player or the game now?
-        #this is not going to be needed now.
         self.totalscore = 0
 
 

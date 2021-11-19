@@ -3,6 +3,7 @@ syntax = "proto3";
 service BeeServer {
   rpc StartBee (StartRequest) returns (StartReply) {}
   rpc SubmitWord (SubmitWordRequest) returns(SubmitWordReply) {}
+  rpc CreateBee (CreateRequest) returns (CreateReply) {}
 }
 
 message StartRequest{
@@ -18,4 +19,12 @@ message SubmitWordRequest{
 
 message SubmitWordReply{
   int32 result = 1;
+}
+
+message CreateRequest{
+  int32 beeType = 1;
+}
+
+message CreateReply{
+  string message = 1;
 }
