@@ -25,8 +25,10 @@ class nytBee(spellingBee):
         else:
             nytBee.__instance = self
         self.complett = None
+        #this is going to be an attribute of the player or the game now?
+        #this is not going to be needed now.
         self.totalscore = 0
-        self.Rankings = {1: "Meh!", 2: "Alright like!", 3: "Savage!", 4: "Massive!", 5: "Medazza!"}
+
 
     def choose_word(self):
         with open("pangrams.json", "r") as pangram_file:
@@ -35,13 +37,13 @@ class nytBee(spellingBee):
             self.target_word = list(pangram_dict.keys())[rand_num]
         #changed code in assignment 2 to return a set here
 
-        self.letterset = set(self.target_word)
-        self.wordset = str(self.letterset)
-        self.half1 = self.wordset[0:2]
-        self.complett = self.wordset[2]
-        self.half2 = self.wordset[4:]
+        letterset = set(self.target_word)
+        wordset = str(letterset)
+        half1 = wordset[0:2]
+        self.complett = wordset[2]
+        half2 = wordset[4:]
         self.completter = '[' + self.complett + ']'
-        mixedupWord = self.half1 + self.completter + self.half2
+        mixedupWord = half1 + self.completter + half2
         print(mixedupWord)
         return mixedupWord
 
@@ -80,13 +82,13 @@ class nytBee(spellingBee):
         pass
 
     def getRankings(self, totalscore):
-        if totalscore < 15:
+        if self.totalscore < 15:
             rank = 1
-        elif totalscore < 20:
+        elif self.totalscore < 20:
             rank = 2
-        elif totalscore < 30:
+        elif self.totalscore < 30:
             rank = 3
-        elif totalscore < 40:
+        elif self.totalscore < 40:
             rank = 4
         else:
             rank = 5
