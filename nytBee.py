@@ -32,21 +32,10 @@ class nytBee(spellingBee):
         with open("pangrams.json", "r") as pangram_file:
             pangram_dict = json.load(pangram_file)
             rand_num = random.randint(0, len(pangram_dict))
-            chosen_word = list(pangram_dict.keys())[rand_num]
+            self.target_word = list(pangram_dict.keys())[rand_num]
         #changed code in assignment 2 to return a set here
-        # chosen_list = []
-        # chosen_list[:0] = chosen_word
-        # print(chosen_list)
-        # middle_spot = int(round(len(chosen_list)/2))
-        # random.shuffle(chosen_list)
-        # #have to have a middle letter to validate
-        # self.middle_letter = chosen_list[middle_spot]
-        # middle_letter = '[' + self.middle_letter + ']'
-        # chosen_list[middle_spot] = middle_letter
-        # mixedup_word = str(chosen_list)
-        # return mixedup_word
 
-        self.letterset = set(chosen_word)
+        self.letterset = set(self.target_word)
         self.wordset = str(self.letterset)
         self.half1 = self.wordset[0:2]
         self.complett = self.wordset[2]

@@ -9,6 +9,7 @@ class spellingBee(ABC):
         self.list_of_submitted_words = []
         # didn't use this yet either but can fill with dictionary maybe to improve speed
         self.words = {}
+        self.players = []
 
     def choose_word(self):
         pass
