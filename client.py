@@ -51,8 +51,13 @@ def run():
     #     #print('Letters: ' + response.message)
 
 def joinBee(stub):
-    response = stub.JoinBee(bee_pb2.JoinRequest())
-    print('Enter the Game ID: ')
+    name = input('Enter your Name: ')
+    gameID = input('Enter the Game ID: ')
+    response = stub.JoinBee(bee_pb2.JoinRequest(gameID, name))
+
+    #I can just put run() again to loop.
+
+    return response
 
 def startBee(stub):
 # this start method is only for single or first player.

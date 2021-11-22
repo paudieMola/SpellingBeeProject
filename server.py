@@ -57,6 +57,12 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
             message = self.bee.createMessage
         return bee_pb2.CreateReply(message=message)
 
+    def JoinBee(self, request, context):
+        self.bee = self.beeType.get_instance()
+        if self.bee.gameID == request.gameID:
+            joinMessage = 'Welcome ' + request.name + '. Letters: ' + self.bee.targetWord
+        return bee_pb2.JoinReply(joinMessage=joinMessage)
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     bee_pb2_grpc.add_BeeServerServicer_to_server(BeeServer(), server)

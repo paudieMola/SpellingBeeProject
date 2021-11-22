@@ -97,7 +97,7 @@ class nytMPBee(nytBee):
             rank = 5
         return rank
 
-    def register_player(self, username):
+    def register_player():
         if username not in self.players:
             index = len(self.players)
             self.players.append(username)
