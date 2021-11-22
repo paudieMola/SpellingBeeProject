@@ -18,24 +18,47 @@ def run():
     print('Choose game: ')
     print('1 : New York Times Spelling Bee')
     print('2 : New York Times Multiplayer Spelling Bee')
-    #put enter multi player game here
+    print('3 : Enter game ID to join Spelling Bee')
+
     beeType = int(input(''))
 
-    #I'll made this as creating the game.
     response = stub.CreateBee(bee_pb2.CreateRequest(beeType=beeType))
     print(response.message)
     # response has message to include game id if mp
 
-    # start the game and
-    response = stub.StartBee(bee_pb2.StartRequest())
-    print('Enter exitgame to exit. You must use the bracketed letter')
-    print('Letters: ' + response.message)
+    # this start method is only for single or first player.
+    # response = stub.StartBee(bee_pb2.StartRequest())
+    # print('Enter exitgame to exit. You must use the bracketed letter')
+    # print('Letters: ' + response.message)
     # loop while game is running
+    if beeType != 3:
+        response = startBee(stub)
+        print('Letters: ' + response.message)
+    else:
+        response = joinBee(stub)
+
     wordIn = ''
     while wordIn != 'exitgame':
         wordIn = input('Enter word:')
         response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn=wordIn))
         print("Score: ", response.result)
+
+    # def startBee():
+    # # this start method is only for single or first player.
+    #     response = stub.StartBee(bee_pb2.StartRequest())
+    #     print('Enter exitgame to exit. You must use the bracketed letter')
+    #     return response
+    #     #print('Letters: ' + response.message)
+
+def joinBee(stub):
+    response = stub.JoinBee(bee_pb2.JoinRequest())
+    print('Enter the Game ID: ')
+
+def startBee(stub):
+# this start method is only for single or first player.
+    response = stub.StartBee(bee_pb2.StartRequest())
+    print('Enter exitgame to exit. You must use the bracketed letter')
+    return response
 
 # def runNYTMP():
 #     channel = grpc.insecure_channel('127.0.0.1:50051')

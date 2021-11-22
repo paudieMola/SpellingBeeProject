@@ -28,7 +28,7 @@ class nytMPBee(nytBee):
             nytMPBee.__instance = self
         self.complett = None
         self.gameID = uuid.uuid4()
-        self.createMessage = 'Share this game ID with second player: ' + (str(self.gameID))
+        self.createMessage = 'Share this game ID to play with others: ' + (str(self.gameID))
 
     # def choose_word(self):
     #     with open("pangrams.json", "r") as pangram_file:

@@ -25,6 +25,8 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         self.factory = object_factory.ObjectFactory()
         self.factory.register_builder(1, nytBee.nytBeeBuilder())
         self.factory.register_builder(2, nytMultiPlayer.nytMPBeeBuilder())
+        # cant do that here because the instance has not yet been created.
+        #self.factory.register_builder(3, self.beeType.get_instance())
 
     def StartBee(self, request, context):
         print("in start Bee")
@@ -45,9 +47,14 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
 
     def CreateBee(self, request, context):
         print('in create bee')
-        self.beeType = self.factory.create(request.beeType)
-        self.bee = self.beeType.get_instance()
-        message = self.bee.createMessage
+        if request.beeType != 3:
+            self.beeType = self.factory.create(request.beeType)
+            self.bee = self.beeType.get_instance()
+            message = self.bee.createMessage
+        else:
+            self.bee = self.beeType.get_instance()
+            self.bee.createMessage = 'Enter the Game ID to join :'
+            message = self.bee.createMessage
         return bee_pb2.CreateReply(message=message)
 
 def serve():
