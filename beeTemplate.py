@@ -8,7 +8,7 @@ class spellingBee(ABC):
         # didn't use this yet either, but can check that words are not submitted twice
         #self.wordsAndScores = {} this is going to be in the player class really
         # didn't use this yet either but can fill with dictionary maybe to improve speed
-        self.players = []
+        self.players = {}
         self.gameID = -1
         self.Rankings = {1: "Meh!", 2: "Alright like!", 3: "Savage!", 4: "Massive!", 5: "Medazza!"}
         self.winning_player_index = -1
@@ -19,7 +19,7 @@ class spellingBee(ABC):
     def choose_word(self):
         pass
 
-    def process_word(self, word_in):
+    def process_word(self, word_in, playerID):
         pass
 
     def validate_word(self, word_in):

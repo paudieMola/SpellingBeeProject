@@ -33,8 +33,8 @@ class nytBee(spellingBee):
             pangram_dict = json.load(pangram_file)
             rand_num = random.randint(0, len(pangram_dict))
             self.target_word = list(pangram_dict.keys())[rand_num]
-        #changed code in assignment 2 to return a set here
 
+        #changed code in assignment 2 to return a set here
         letterset = set(self.target_word)
         wordset = str(letterset)
         half1 = wordset[0:2]
@@ -45,7 +45,7 @@ class nytBee(spellingBee):
         print(mixedupWord)
         return mixedupWord
 
-    def process_word(self, wordIn):
+    def process_word(self, wordIn, playerID):
         #will add comment to response to client
         self.comment = ''
         if (len(wordIn)) > 3:

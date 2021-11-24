@@ -9,7 +9,7 @@ import object_factory
 
 #this worked to get the proto file creating the bee_pb2 files
 #but issues still with importing modules
-from nytMultiPlayer import nytMPBee
+#from nytMultiPlayer import nytMPBee
 
 sys.path.append('')
 
@@ -41,7 +41,7 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         # check word submitted by client and get a result
         # I should create another parameter for message too to be returned to client
         #result = nytBee.nytBee.process_word(request.wordIn)
-        result = self.bee.process_word(request.wordIn)
+        result = self.bee.process_word(request.wordIn, request.playerID)
         print('submit word ', result)
         return bee_pb2.SubmitWordReply(result=result)
 
@@ -50,18 +50,25 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         if request.beeType != 3:
             self.beeType = self.factory.create(request.beeType)
             self.bee = self.beeType.get_instance()
+            #self.bee.register_player
             message = self.bee.createMessage
         else:
             self.bee = self.beeType.get_instance()
-            self.bee.createMessage = 'Enter the Game ID to join :'
+            self.bee.createMessage = 'Enter game ID to join.'
             message = self.bee.createMessage
         return bee_pb2.CreateReply(message=message)
 
     def JoinBee(self, request, context):
         self.bee = self.beeType.get_instance()
-        if self.bee.gameID == request.gameID:
-            joinMessage = 'Welcome ' + request.name + '. Letters: ' + self.bee.targetWord
-        return bee_pb2.JoinReply(joinMessage=joinMessage)
+        playerID = self.bee.register_player()
+        print(request.gameID)
+        print(self.bee.gameID)
+        #cant get this condition working
+        #if self.bee.gameID == request.gameID:
+        joinMessage = 'Letters: ' + self.bee.target_word
+        #else:
+            #joinMessage = 'Something went wrong. Please try again'
+        return bee_pb2.JoinReply(joinMessage=joinMessage, playerID=playerID)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

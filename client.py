@@ -17,13 +17,15 @@ def run():
 
     print('Choose game: ')
     print('1 : New York Times Spelling Bee')
-    print('2 : New York Times Multiplayer Spelling Bee')
-    print('3 : Enter game ID to join Spelling Bee')
+    print('2 : Start New York Times Multiplayer Spelling Bee')
+    print('3 : Join Existing Multiplayer Spelling Bee with gameID')
 
     beeType = int(input(''))
 
-    response = stub.CreateBee(bee_pb2.CreateRequest(beeType=beeType))
-    print(response.message)
+    createResponse = stub.CreateBee(bee_pb2.CreateRequest(beeType=beeType))
+    gameID = createResponse.message
+    playerID = 0
+    print(createResponse.message)
     # response has message to include game id if mp
 
     # this start method is only for single or first player.
@@ -31,33 +33,40 @@ def run():
     # print('Enter exitgame to exit. You must use the bracketed letter')
     # print('Letters: ' + response.message)
     # loop while game is running
-    if beeType != 3:
-        response = startBee(stub)
-        print('Letters: ' + response.message)
-    else:
-        response = joinBee(stub)
 
+
+    # Seperate out into 3 options here to get name from 1st player
+
+    if beeType == 1:
+        startResponse = startBee(stub)
+        print('Letters: ' + startResponse.message)
+    elif beeType == 2:
+        #I dont need to return letters here as will when player joins game
+        startBee(stub)
+        #print('Letters: ' + response.message)
+        # joinReply will return letters as message
+        player0Response = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
+        print('Letters: ' + player0Response.joinMessage)
+    else:
+        joinResponse = joinBee(stub)
+        print('Letters: ' + joinResponse.joinMessage)
+
+    #game loop for all players
     wordIn = ''
     while wordIn != 'exitgame':
         wordIn = input('Enter word:')
-        response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn=wordIn))
+        response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn=wordIn, playerID=playerID))
         print("Score: ", response.result)
-
-    # def startBee():
-    # # this start method is only for single or first player.
-    #     response = stub.StartBee(bee_pb2.StartRequest())
-    #     print('Enter exitgame to exit. You must use the bracketed letter')
-    #     return response
-    #     #print('Letters: ' + response.message)
+    print('Game Over')
 
 def joinBee(stub):
-    name = input('Enter your Name: ')
+    #can remove this to a gui after.
     gameID = input('Enter the Game ID: ')
-    response = stub.JoinBee(bee_pb2.JoinRequest(gameID, name))
-
-    #I can just put run() again to loop.
-
-    return response
+    #name = input('Enter your Name: ')
+    #response will return letters
+    #this gives you back the letters and player ID
+    JoinResponse = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
+    return JoinResponse
 
 def startBee(stub):
 # this start method is only for single or first player.
@@ -84,9 +93,4 @@ def startBee(stub):
 
 if __name__ == '__main__':
     logging.basicConfig()
-    # while gameChoice < 1 | gameChoice > 2:
-    #     print('Choose game: ')
-    #     print('1 : New York Times Spelling Bee')
-    #     print('2 : New York Times Multiplayer Spelling Bee')
-    #     gameChoice = int(input(''))
     run()
