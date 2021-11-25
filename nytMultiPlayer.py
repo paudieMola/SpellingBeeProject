@@ -56,14 +56,15 @@ class nytMPBee(nytBee):
             self.currentScore = self.players[playerID]
             self.currentScore += wordscore
             self.players[playerID] = self.currentScore
-            self.comment = self.Rankings[self.getRankings(self.currentScore)]
-        return wordscore
+            self.comment += self.Rankings[self.getRankings(self.currentScore)]
+        return wordscore, self.comment, self.currentScore
 
     def scoreWord(self, word_in):
         word_score = len(word_in)
+        #can I make this work here?
         if pangrams.is_pangram(word_in):
             # I'll return this as a comment instead
-            print("That is a pangram")
+            self.comment = " That is a pangram!"
             word_score += 7
         return word_score
 

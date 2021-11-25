@@ -3,11 +3,11 @@ from __future__ import print_function
 import logging
 
 import grpc
-import sys
+#import sys
 
 import server
 
-sys.path.append('')
+#sys.path.append('')
 import bee_pb2
 import bee_pb2_grpc
 
@@ -26,14 +26,6 @@ def run():
     gameID = createResponse.message
     playerID = 0
     print(createResponse.message)
-    # response has message to include game id if mp
-
-    # this start method is only for single or first player.
-    # response = stub.StartBee(bee_pb2.StartRequest())
-    # print('Enter exitgame to exit. You must use the bracketed letter')
-    # print('Letters: ' + response.message)
-    # loop while game is running
-
 
     # Seperate out into 3 options here to get name from 1st player
 
@@ -43,7 +35,6 @@ def run():
     elif beeType == 2:
         #I dont need to return letters here as will when player joins game
         startBee(stub)
-        #print('Letters: ' + response.message)
         # joinReply will return letters as message
         player0Response = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
         playerID = player0Response.playerID
@@ -52,6 +43,9 @@ def run():
     else:
         joinResponse = joinBee(stub)
         playerID = joinResponse.playerID
+        while joinResponse.joinMessage == 'Something went wrong. Please try again':
+            print(joinResponse.joinMessage)
+            joinBee(stub)
         print('Player ID ' + str(playerID))
         print('Letters: ' + joinResponse.joinMessage)
 
@@ -60,7 +54,7 @@ def run():
     while wordIn != 'exitgame':
         wordIn = input('Enter word:')
         response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn=wordIn, playerID=playerID))
-        print("Score: ", response.result)
+        print("Word Score: ", response.result, response.comment, "Player total: ", response.currentScore)
     print('Game Over')
 
 def joinBee(stub):

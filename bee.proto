@@ -21,6 +21,8 @@ message SubmitWordRequest{
 
 message SubmitWordReply{
   int32 result = 1;
+  string comment = 2;
+  int32 currentScore = 3;
 }
 
 message CreateRequest{

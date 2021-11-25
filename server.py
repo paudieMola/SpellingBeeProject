@@ -38,9 +38,9 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         print(request.wordIn)
         # check word submitted by client and get a result
         # I should create another parameter for message too to be returned to client
-        result = self.bee.process_word(request.wordIn, request.playerID)
+        result, comment, currentScore = self.bee.process_word(request.wordIn, request.playerID)
         print('submit word ', result)
-        return bee_pb2.SubmitWordReply(result=result)
+        return bee_pb2.SubmitWordReply(result=result, comment=comment, currentScore=currentScore)
 
     def CreateBee(self, request, context):
         print('in create bee')
@@ -59,7 +59,6 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         playerID = self.bee.register_player()
 
         if self.bee.gameID == request.gameID:
-
             joinMessage = self.bee.mixedupWord
         else:
             joinMessage = 'Something went wrong. Please try again'
