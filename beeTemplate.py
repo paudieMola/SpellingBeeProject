@@ -5,6 +5,7 @@ class spellingBee(ABC):
     def __init__(self):
         # didnt use this yet
         self.target_word = ''
+        self.mixedupWord = ''
         # didn't use this yet either, but can check that words are not submitted twice
         #self.wordsAndScores = {} this is going to be in the player class really
         # didn't use this yet either but can fill with dictionary maybe to improve speed

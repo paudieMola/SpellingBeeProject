@@ -21,12 +21,10 @@ import bee_pb2_grpc
 class BeeServer(bee_pb2_grpc.BeeServerServicer):
 
     def __init__(self):
-        #self.nytMPBee = nytMultiPlayer.nytMPBee
         self.factory = object_factory.ObjectFactory()
         self.factory.register_builder(1, nytBee.nytBeeBuilder())
         self.factory.register_builder(2, nytMultiPlayer.nytMPBeeBuilder())
-        # cant do that here because the instance has not yet been created.
-        #self.factory.register_builder(3, self.beeType.get_instance())
+
 
     def StartBee(self, request, context):
         print("in start Bee")
@@ -40,7 +38,6 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         print(request.wordIn)
         # check word submitted by client and get a result
         # I should create another parameter for message too to be returned to client
-        #result = nytBee.nytBee.process_word(request.wordIn)
         result = self.bee.process_word(request.wordIn, request.playerID)
         print('submit word ', result)
         return bee_pb2.SubmitWordReply(result=result)
@@ -50,7 +47,6 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         if request.beeType != 3:
             self.beeType = self.factory.create(request.beeType)
             self.bee = self.beeType.get_instance()
-            #self.bee.register_player
             message = self.bee.createMessage
         else:
             self.bee = self.beeType.get_instance()
@@ -61,13 +57,12 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
     def JoinBee(self, request, context):
         self.bee = self.beeType.get_instance()
         playerID = self.bee.register_player()
-        print(request.gameID)
-        print(self.bee.gameID)
-        #cant get this condition working
-        #if self.bee.gameID == request.gameID:
-        joinMessage = 'Letters: ' + self.bee.target_word
-        #else:
-            #joinMessage = 'Something went wrong. Please try again'
+
+        if self.bee.gameID == request.gameID:
+
+            joinMessage = self.bee.mixedupWord
+        else:
+            joinMessage = 'Something went wrong. Please try again'
         return bee_pb2.JoinReply(joinMessage=joinMessage, playerID=playerID)
 
 def serve():

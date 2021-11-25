@@ -41,9 +41,9 @@ class nytBee(spellingBee):
         self.complett = wordset[2]
         half2 = wordset[4:]
         self.completter = '[' + self.complett + ']'
-        mixedupWord = half1 + self.completter + half2
-        print(mixedupWord)
-        return mixedupWord
+        self.mixedupWord = half1 + self.completter + half2
+        #print(mixedupWord)
+        return self.mixedupWord
 
     def process_word(self, wordIn, playerID):
         #will add comment to response to client

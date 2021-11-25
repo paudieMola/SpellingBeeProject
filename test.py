@@ -15,6 +15,11 @@ def testClient():
 
 def testProcessWord():
     newBee = nytMultiPlayer.nytMPBee.get_instance()
+    newBee.complett = 'a'
+    newBee.register_player()
+    newBee.register_player()
+    print(newBee.process_word('Leave', 0))
+    print(newBee.process_word('leave', 1))
 
 
 testProcessWord()

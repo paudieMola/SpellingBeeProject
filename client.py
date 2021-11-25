@@ -46,9 +46,13 @@ def run():
         #print('Letters: ' + response.message)
         # joinReply will return letters as message
         player0Response = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
+        playerID = player0Response.playerID
+        print('Player ID ' + str(playerID))
         print('Letters: ' + player0Response.joinMessage)
     else:
         joinResponse = joinBee(stub)
+        playerID = joinResponse.playerID
+        print('Player ID ' + str(playerID))
         print('Letters: ' + joinResponse.joinMessage)
 
     #game loop for all players
@@ -72,24 +76,8 @@ def startBee(stub):
 # this start method is only for single or first player.
     response = stub.StartBee(bee_pb2.StartRequest())
     print('Enter exitgame to exit. You must use the bracketed letter')
+    print('Letters: ' + response.message)
     return response
-
-# def runNYTMP():
-#     channel = grpc.insecure_channel('127.0.0.1:50051')
-#     stub = bee_pb2_grpc.BeeServerStub(channel)
-#
-#     # start the game and
-#     name = input('Enter your Name: ')
-#     response = stub.StartBee(bee_pb2.StartMPRequest(message=name))
-#     print('Welcome ' + name + 'Use GameID to allow second player to join this game.')
-#     print(' Letters: ' + response.letters)
-#
-#     # loop while game is running
-#     wordIn = ''
-#     while wordIn != 'exitgame':
-#         wordIn = input('Enter word:')
-#         response = stub.SubmitWord(bee_pb2.SubmitWordRequest(wordIn=wordIn))
-#         print("Score: ", response.result)
 
 if __name__ == '__main__':
     logging.basicConfig()

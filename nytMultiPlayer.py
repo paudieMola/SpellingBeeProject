@@ -27,9 +27,10 @@ class nytMPBee(nytBee):
         else:
             nytMPBee.__instance = self
         self.complett = None
-        self.gameID = uuid.uuid4()
-        self.createMessage = (str(self.gameID))
+        self.gameID = str(uuid.uuid4())
+        self.createMessage = (self.gameID)
         self.wordsUsed = []
+        self.currentScore = 0
 
     def process_word(self, wordIn, playerID):
         #will add comment to response to client
@@ -45,46 +46,19 @@ class nytMPBee(nytBee):
         wordscore = 0
         if wordIn in self.wordsUsed:
             self.comment = comments.get(1)
-        elif (len(wordIn)) > 3:
+        elif (len(wordIn)) < 4:
             self.comment = comments.get(2)
         elif self.complett not in wordIn:
             self.comment = comments.get(3)
         else:
             wordscore = self.scoreWord(wordIn)
             self.wordsUsed.append(wordIn)
-            currentScore = self.players.values(playerID)
-            currentScore += wordscore
-            self.players[playerID] = currentScore
-            self.comment = self.Rankings[self.getRankings(currentScore)]
+            self.currentScore = self.players[playerID]
+            self.currentScore += wordscore
+            self.players[playerID] = self.currentScore
+            self.comment = self.Rankings[self.getRankings(self.currentScore)]
         return wordscore
 
-        # if (len(wordIn)) > 3 & wordIn not in self.wordsUsed:
-        #     if self.complett in wordIn:
-        #         if self.validate_word(wordIn):
-        #             result = self.scoreWord(wordIn)
-        #             self.wordsUsed.append(self, wordIn)
-        #             self.totalscore += result
-        #             self.comment = self.Rankings[self.getRankings(self.totalscore)]
-        #     else:
-        #         self.comment = ("Word must contain the letter: ", self.complett)
-        # else:
-        #         self.comment = ("Words must contain 4 letters")
-        # return self.totalscore
-
-
-
-
-
-
-    #
-    # def validate_word(self, word_in):
-    #     with open("words_dictionary.json", "r") as words_file:
-    #         word_dict = json.load(words_file)
-    #         if word_in in word_dict:
-    #             return True
-    #         else:
-    #             return False
-    #
     def scoreWord(self, word_in):
         word_score = len(word_in)
         if pangrams.is_pangram(word_in):
@@ -114,6 +88,7 @@ class nytMPBee(nytBee):
 
     def register_player(self):
         index = len(self.players)
+        self.players[index] = 0
         return index
 
 # used to build object
