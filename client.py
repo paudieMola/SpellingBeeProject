@@ -16,9 +16,9 @@ def run():
     stub = bee_pb2_grpc.BeeServerStub(channel)
 
     print('Choose game: ')
-    print('1 : New York Times Spelling Bee')
-    print('2 : Start New York Times Multiplayer Spelling Bee')
-    print('3 : Join Existing Multiplayer Spelling Bee with gameID')
+    #print('1 : New York Times Spelling Bee')
+    print('1 : Start New York Times  Spelling Bee')
+    print('2 : Join Existing Spelling Bee with gameID')
 
     beeType = int(input(''))
 
@@ -29,10 +29,11 @@ def run():
 
     # Seperate out into 3 options here to get name from 1st player
 
+    #Take this out if I cant get it debugged.
+    # if beeType == 1:
+    #     startResponse = startBee(stub)
+    #     print('Letters: ' + startResponse.message)
     if beeType == 1:
-        startResponse = startBee(stub)
-        print('Letters: ' + startResponse.message)
-    elif beeType == 2:
         #I dont need to return letters here as will when player joins game
         startBee(stub)
         # joinReply will return letters as message
@@ -69,6 +70,7 @@ def joinBee(stub):
 def startBee(stub):
 # this start method is only for single or first player.
     response = stub.StartBee(bee_pb2.StartRequest())
+    print('Give this code to allow another to enter this game')
     print('Enter exitgame to exit. You must use the bracketed letter')
     print('Letters: ' + response.message)
     return response

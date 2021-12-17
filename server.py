@@ -22,8 +22,9 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
 
     def __init__(self):
         self.factory = object_factory.ObjectFactory()
-        self.factory.register_builder(1, nytBee.nytBeeBuilder())
-        self.factory.register_builder(2, nytMultiPlayer.nytMPBeeBuilder())
+        #take out if I cant get the single and multiplayer going
+        #self.factory.register_builder(1, nytBee.nytBeeBuilder())
+        self.factory.register_builder(1, nytMultiPlayer.nytMPBeeBuilder())
 
 
     def StartBee(self, request, context):
@@ -44,7 +45,7 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
 
     def CreateBee(self, request, context):
         print('in create bee')
-        if request.beeType != 3:
+        if request.beeType != 2:
             self.beeType = self.factory.create(request.beeType)
             self.bee = self.beeType.get_instance()
             message = self.bee.createMessage
