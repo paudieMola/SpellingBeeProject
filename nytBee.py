@@ -42,11 +42,9 @@ class nytBee(spellingBee):
         half2 = wordset[4:]
         self.completter = '[' + self.complett + ']'
         self.mixedupWord = half1 + self.completter + half2
-        #print(mixedupWord)
         return self.mixedupWord
 
     def process_word(self, wordIn, playerID):
-        #will add comment to response to client
         self.comment = ''
         if (len(wordIn)) > 3:
             if self.complett in wordIn:
@@ -71,7 +69,6 @@ class nytBee(spellingBee):
     def scoreWord(self, word_in):
         word_score = len(word_in)
         if pangrams.is_pangram(word_in):
-            # I'll return this as a comment instead
             print("That is a pangram")
             word_score += 7
         return word_score

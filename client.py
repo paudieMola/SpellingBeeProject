@@ -24,7 +24,7 @@ def run():
 
     createResponse = stub.CreateBee(bee_pb2.CreateRequest(beeType=beeType))
     gameID = createResponse.message
-    playerID = 0
+    #playerID = 0
     print(createResponse.message)
 
     # Seperate out into 3 options here to get name from 1st player

@@ -3,11 +3,10 @@
 import threading
 import uuid
 
-# from beeTemplate import spellingBee
 import pangrams
 from nytBee import nytBee
 
-
+# inherits from ntyBee from assignment 1
 class nytMPBee(nytBee):
     __instance = None
 
@@ -33,17 +32,19 @@ class nytMPBee(nytBee):
         self.currentScore = 0
 
     def process_word(self, wordIn, playerID):
-        #will add comment to response to client
-        #takes
+        # updated from assignment 1 to add comment to response to client
         self.comment = ''
 
         comments = {
             1: 'Word used already',
             2: 'Word must contain 4 letters',
             3: 'Word must contain the bracketed letter',
-            4: 'Word does not exist'
+            4: 'Word does not exist',
+            5: 'Word does not exist'
         }
 
+        # updated to get the correct comment and to keep track of all players scores.
+        # also keeps track of words used so no player can use the again.
         wordscore = 0
         if wordIn in self.wordsUsed:
             self.comment = comments.get(1)
@@ -54,6 +55,10 @@ class nytMPBee(nytBee):
         else:
             if self.validate_word(wordIn):
                 wordscore = self.scoreWord(wordIn)
+                if pangrams.is_pangram(wordIn):
+                    # I'll return this as a comment instead
+                    self.comment = comments.get(5)
+                    wordscore += 7
                 self.wordsUsed.append(wordIn)
                 self.currentScore = self.players[playerID]
                 self.currentScore += wordscore
@@ -64,12 +69,8 @@ class nytMPBee(nytBee):
         return wordscore, self.comment, self.currentScore
 
     def scoreWord(self, word_in):
+        #changed to take out panagram check here.
         word_score = len(word_in)
-        #can I make this work here?
-        if pangrams.is_pangram(word_in):
-            # I'll return this as a comment instead
-            self.comment = " That is a pangram!"
-            word_score += 7
         return word_score
 
     def record_stats(self, word_score):
