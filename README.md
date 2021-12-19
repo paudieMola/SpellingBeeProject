@@ -5,6 +5,18 @@ R00142752
 
 Soft 8023 Semester 1 2021
 
+Assignment 2 Readme
+I have extended the functionality of the original nytBee class to create a 
+nytMultiplayer class. 
+This allows players to play as a single player or allow other players
+to join when the code is entered and authenticated. The code is a uuid
+created for each game on the server. 
+The multi player game keeps track of the scores of all the players, it 
+will allow any number of players and words used by any player cannot
+be reused. I have also updated the messages the user receives to include
+the error if a word cannot be accepted for scoring, or if it is a pangram.
+
+Assignment 1 Readme
 Pattern 1
 Singleton:
 I have used the singleton pattern to create a spelling Bee game (nytBee). 
