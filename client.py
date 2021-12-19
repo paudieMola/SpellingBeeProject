@@ -40,7 +40,7 @@ def run():
         player0Response = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
         playerID = player0Response.playerID
         print('Player ID ' + str(playerID))
-        print('Letters: ' + player0Response.joinMessage)
+        #print('Letters: ' + player0Response.joinMessage)
     else:
         joinResponse = joinBee(stub)
         playerID = joinResponse.playerID
@@ -59,9 +59,7 @@ def run():
     print('Game Over')
 
 def joinBee(stub):
-    #can remove this to a gui after.
     gameID = input('Enter the Game ID: ')
-    #name = input('Enter your Name: ')
     #response will return letters
     #this gives you back the letters and player ID
     JoinResponse = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
@@ -71,7 +69,7 @@ def startBee(stub):
 # this start method is only for single or first player.
     response = stub.StartBee(bee_pb2.StartRequest())
     print('Give this code to allow another to enter this game')
-    print('Enter exitgame to exit. You must use the bracketed letter')
+    print('Enter exitgame to exit. You must use the bracketed letter [ ]')
     print('Letters: ' + response.message)
     return response
 

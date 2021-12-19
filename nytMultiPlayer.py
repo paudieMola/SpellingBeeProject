@@ -40,7 +40,8 @@ class nytMPBee(nytBee):
         comments = {
             1: 'Word used already',
             2: 'Word must contain 4 letters',
-            3: 'Word must contain the bracketed letter'
+            3: 'Word must contain the bracketed letter',
+            4: 'Word does not exist'
         }
 
         wordscore = 0
@@ -51,12 +52,15 @@ class nytMPBee(nytBee):
         elif self.complett not in wordIn:
             self.comment = comments.get(3)
         else:
-            wordscore = self.scoreWord(wordIn)
-            self.wordsUsed.append(wordIn)
-            self.currentScore = self.players[playerID]
-            self.currentScore += wordscore
-            self.players[playerID] = self.currentScore
-            self.comment += self.Rankings[self.getRankings(self.currentScore)]
+            if self.validate_word(wordIn):
+                wordscore = self.scoreWord(wordIn)
+                self.wordsUsed.append(wordIn)
+                self.currentScore = self.players[playerID]
+                self.currentScore += wordscore
+                self.players[playerID] = self.currentScore
+                self.comment += self.Rankings[self.getRankings(self.currentScore)]
+            else:
+                self.comment = comments.get(4)
         return wordscore, self.comment, self.currentScore
 
     def scoreWord(self, word_in):
@@ -69,12 +73,9 @@ class nytMPBee(nytBee):
         return word_score
 
     def record_stats(self, word_score):
-        #this will record each players words and scores
-        #are guessed words going to be out of bounds.
         pass
 
     def getRankings(self, currentScore):
-        #this will change to apply to the player rather than the game
         if currentScore < 10:
             rank = 1
         elif currentScore < 15:
