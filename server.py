@@ -22,8 +22,6 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
 
     def __init__(self):
         self.factory = object_factory.ObjectFactory()
-        #take out if I cant get the single and multiplayer going
-        #self.factory.register_builder(1, nytBee.nytBeeBuilder())
         self.factory.register_builder(1, nytMultiPlayer.nytMPBeeBuilder())
 
 
@@ -41,6 +39,7 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
         print('submit word ', result)
         return bee_pb2.SubmitWordReply(result=result, comment=comment, currentScore=currentScore)
 
+    # creates a new bee for first player or gets the instance if its a later player
     def CreateBee(self, request, context):
         print('in create bee')
         if request.beeType != 2:
@@ -53,6 +52,7 @@ class BeeServer(bee_pb2_grpc.BeeServerServicer):
             message = self.bee.createMessage
         return bee_pb2.CreateReply(message=message)
 
+    # so that other players can join the bee already created.
     def JoinBee(self, request, context):
         self.bee = self.beeType.get_instance()
         playerID = self.bee.register_player()

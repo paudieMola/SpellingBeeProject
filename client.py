@@ -3,11 +3,7 @@ from __future__ import print_function
 import logging
 
 import grpc
-#import sys
 
-import server
-
-#sys.path.append('')
 import bee_pb2
 import bee_pb2_grpc
 
@@ -16,7 +12,6 @@ def run():
     stub = bee_pb2_grpc.BeeServerStub(channel)
 
     print('Choose game: ')
-    #print('1 : New York Times Spelling Bee')
     print('1 : Start New York Times  Spelling Bee')
     print('2 : Join Existing Spelling Bee with gameID')
 
@@ -24,15 +19,8 @@ def run():
 
     createResponse = stub.CreateBee(bee_pb2.CreateRequest(beeType=beeType))
     gameID = createResponse.message
-    #playerID = 0
     print(createResponse.message)
 
-    # Seperate out into 3 options here to get name from 1st player
-
-    #Take this out if I cant get it debugged.
-    # if beeType == 1:
-    #     startResponse = startBee(stub)
-    #     print('Letters: ' + startResponse.message)
     if beeType == 1:
         #I dont need to return letters here as will when player joins game
         startBee(stub)
@@ -40,7 +28,6 @@ def run():
         player0Response = stub.JoinBee(bee_pb2.JoinRequest(gameID=gameID))
         playerID = player0Response.playerID
         print('Player ID ' + str(playerID))
-        #print('Letters: ' + player0Response.joinMessage)
     else:
         joinResponse = joinBee(stub)
         playerID = joinResponse.playerID
